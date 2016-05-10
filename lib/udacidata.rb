@@ -4,7 +4,8 @@ require 'csv'
 
 class Udacidata
     @@data_path = File.dirname(__FILE__) + "/../data/data.csv"
-    @@products = []
+    
+    
     def self.create(attributes = {})
         new_product = Product.new(attributes)
         CSV.open(@@data_path, "a+") do |csv|
@@ -14,15 +15,17 @@ class Udacidata
     end
     
     def self.all
+        products = []
         CSV.read(@@data_path, headers: true).each do |product|
-            @@products << self.new(id: product["id"], brand: product["brand"], name: product["product"], price: product["price"])
+            products << self.new(id: product["id"], brand: product["brand"], name: product["product"], price: product["price"])
         end
-        @@products
+        products
         #CSV.read(@@data_path).drop(1).map{ |product| @@products << self.new(id: product[0], brand: product[1], name: product[2], pricd: product[3])}
     end
     
     def self.first
-        @@products.first
+
+        all.first
     end
 
 end
