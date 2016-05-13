@@ -10,7 +10,9 @@ class Module
     attributes.each do |name|
       self.class_eval("
         def self.find_by_#{name}(search)
-          p all.select{ |product| product.#{name} == search}
+          all.each do |product|
+            return product if product.#{name} == search
+          end
         end
       
       ")
