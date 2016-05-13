@@ -3,6 +3,7 @@ require_relative 'errors'
 require 'csv'
 
 class Udacidata
+    create_finder_methods("brand", "name")
     @@data_path = File.dirname(__FILE__) + "/../data/data.csv"
     
     
@@ -15,17 +16,48 @@ class Udacidata
     end
     
     def self.all
-        products = []
+        @@products = []
         CSV.read(@@data_path, headers: true).each do |product|
-            products << self.new(id: product["id"], brand: product["brand"], name: product["product"], price: product["price"])
+            @@products << self.new(id: product["id"], brand: product["brand"], name: product["product"], price: product["price"])
         end
-        products
+        @@products
         #CSV.read(@@data_path).drop(1).map{ |product| @@products << self.new(id: product[0], brand: product[1], name: product[2], pricd: product[3])}
     end
     
-    def self.first
-
-        all.first
+    def self.first(n = 1)
+        if n == 1
+            all.first
+        else 
+            all[0..n-1]
+        end
     end
+    
+    def self.last(n = 1)
+        if n == 1
+            all.last
+        else
+            last = all.length
+            all[last-n..last]
+        end
+    end
+    
+    def self.find(n)
+        all[n-1]
+    end
+    
+    def self.destroy(n)
+         
+         database = CSV.table(@@data_path)
+         database.delete_if do |row|
+             row[:id] == 2
+         end
+         
+         File.open(@@data_path, "w") do |f|
+             f.write(database.to_csv)
+         end
+         @@products[n-1]
+         
+    end
+    
 
 end
