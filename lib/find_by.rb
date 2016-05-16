@@ -1,9 +1,12 @@
 class Module
   
   # def create_finder_methods(*attributes)
-  #   attributes.each do |name|
-  #     self.send(:define_method, "self.find_by_#{name}(search)") do
-  #       all.select{|brand| brand.brand == search}
+  #   attributes.each do |find|
+  #     p find
+  #     self.send(:define_singleton_method, "find_by_#{find}") do |params = ""|
+  #       all.each do |product|
+  #         return product if product.find == params
+  #       end
   #     end
   #   end
   def create_finder_methods(*attributes)

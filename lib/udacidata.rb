@@ -16,11 +16,11 @@ class Udacidata
     end
     
     def self.all
-        @@products = []
+        products = []
         CSV.read(@@data_path, headers: true).each do |product|
-            @@products << self.new(id: product["id"], brand: product["brand"], name: product["product"], price: product["price"])
+            products << self.new(id: product["id"], brand: product["brand"], name: product["product"], price: product["price"])
         end
-        @@products
+        products
         #CSV.read(@@data_path).drop(1).map{ |product| @@products << self.new(id: product[0], brand: product[1], name: product[2], pricd: product[3])}
     end
     
@@ -42,12 +42,19 @@ class Udacidata
     end
     
     def self.find(n)
+        raise ProductNotFoundError, "Can not found product id#{n}" if all[n-1].nil?
         all[n-1]
+        
     end
     
     def self.destroy(n)
-         
+         products = []
          database = CSV.table(@@data_path)
+         database.each do |data|
+             products << new(id: data[:id], brand: data[:brand], name: data[:product], price: data[:price])
+         end
+             
+         
          database.delete_if do |row|
              row[:id] == 2
          end
@@ -55,8 +62,34 @@ class Udacidata
          File.open(@@data_path, "w") do |f|
              f.write(database.to_csv)
          end
-         @@products[n-1]
          
+        raise ProductNotFoundError, "Can not found product id#{n}" if products[n-1].nil?
+         products[n-1]
+         
+       
+         
+    end
+    
+    def self.where(options = {})
+        all.select{|product| product.brand == options[:brand]}
+    end
+    
+    def update(options = {})
+        products = []
+        data = CSV.table(@@data_path)
+        data.each do |product|
+            if product[:id] == self.id
+                product[:price] = options[:price] ? options[:price] : product[:price]
+                product[:brand] = options[:brand] ? options[:brand] : product[:brand]
+                product[:name] = options[:name] ? options[:name] :  product[:name]
+                products = Product.new(id: product[:id], brand: product[:brand], name: product[:product], price: product[:price])
+            end
+        end
+        File.open(@@data_path, "w") do |f|
+            f.write(data.to_csv)
+        end
+        products
+        
     end
     
 
