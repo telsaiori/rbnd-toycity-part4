@@ -51,7 +51,7 @@ module Analyzable
     end
     result += "Inventory by Name: \n"
     count_by_name(all_data).each do |key, value|
-      result += " - #{key}: #{value}"
+      result += " - #{key}: #{value} \n"
     end
     result
   end
