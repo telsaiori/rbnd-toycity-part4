@@ -58,15 +58,18 @@ class Udacidata
              
          
          database.delete_if do |row|
-             row[:id] == 2
+             row[:id] == n
          end
          
          File.open(@@data_path, "w") do |f|
              f.write(database.to_csv)
          end
          
-        raise ProductNotFoundError, "Can not found product id#{n}" if products[n-1].nil?
-         products[n-1]
+        # raise ProductNotFoundError, "Can not found product id#{n}" if products[n-1].nil?
+        #  products[n-1]
+        find = products.find{ |product| product.id == n }
+        raise ProductNotFoundError, "Can not found product id#{n}" if find.nil?
+        find
          
        
          
