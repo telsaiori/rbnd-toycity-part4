@@ -42,8 +42,10 @@ class Udacidata
     end
     
     def self.find(n)
-        raise ProductNotFoundError, "Can not found product id#{n}" if all[n-1].nil?
-        all[n-1]
+        # raise ProductNotFoundError, "Can not found product id#{n}" if all[n-1].nil?
+        find = all.find{ |product| product.id == n }
+        raise ProductNotFoundError, "Can not found product id#{n}" if find.nil?
+        find
         
     end
     
