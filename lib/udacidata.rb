@@ -37,8 +37,7 @@ class Udacidata
         if n == 1
             all.last
         else
-            last = all.length
-            all[last-n..last]
+            all.last(n)
         end
     end
     
