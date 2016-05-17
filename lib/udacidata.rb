@@ -43,9 +43,13 @@ class Udacidata
     
     def self.find(n)
         # raise ProductNotFoundError, "Can not found product id#{n}" if all[n-1].nil?
-        find = all.find{ |product| product.id == n }
-        raise ProductNotFoundError, "Can not found product id#{n}" if find.nil?
-        find
+        find_data = all.find{ |product| product.id == n }
+        if find_data.nil?
+            raise ProductNotFoundError, "Can not found product id#{n}" 
+        else
+            find_data
+        end
+        
         
     end
     
@@ -56,23 +60,19 @@ class Udacidata
              products << new(id: data[:id], brand: data[:brand], name: data[:product], price: data[:price])
          end
              
-         
-         database.delete_if do |row|
-             row[:id] == n
+         if find(n)
+            del_product = find(n)
+            database.delete_if do |row|
+                row[:id] == n
+            end
          end
-         
+
          File.open(@@data_path, "w") do |f|
              f.write(database.to_csv)
          end
          
-        # raise ProductNotFoundError, "Can not found product id#{n}" if products[n-1].nil?
-        #  products[n-1]
-        find = products.find{ |product| product.id == n }
-        raise ProductNotFoundError, "Can not found product id#{n}" if find.nil?
-        find
-         
-       
-         
+        del_product
+
     end
     
     def self.where(options = {})
