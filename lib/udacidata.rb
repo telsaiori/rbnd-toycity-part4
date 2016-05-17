@@ -28,8 +28,9 @@ class Udacidata
         if n == 1
             all.first
         else 
-            all[0..n-1]
+            all.first(n)
         end
+
     end
     
     def self.last(n = 1)
