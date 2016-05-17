@@ -71,7 +71,11 @@ class Udacidata
     end
     
     def self.where(options = {})
-        all.select{|product| product.brand == options[:brand]}
+        if options[:brand]
+            all.select{|product| product.brand == options[:brand]}
+        else
+            all.select{|product| product.name == options[:name]}
+        end
     end
     
     def update(options = {})

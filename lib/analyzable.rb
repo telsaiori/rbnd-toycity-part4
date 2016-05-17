@@ -19,8 +19,9 @@ module Analyzable
     
    all_brand.uniq.each do |brand|
       products.each do |product|
-        product.brand == brand
-        count[brand] = count[brand].nil? ? 1 : count[brand]+=1
+        if product.brand == brand
+          count[brand] = count[brand].nil? ? 1 : count[brand]+=1
+        end
       end
     end
     count
@@ -36,8 +37,9 @@ module Analyzable
     
     all_name.uniq.each do |name|
       products.each do |product|
-        product.name == name
-        count[name] = count[name].nil? ? 1 : count[name]+=1
+        if product.name == name
+          count[name] = count[name].nil? ? 1 : count[name]+=1
+        end
       end
     end
     count
